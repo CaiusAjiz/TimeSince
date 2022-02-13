@@ -1,3 +1,9 @@
-# TimeSince
-"So i really like this game, it really reminds me of ${game}"
-"They said it! reset the clock!"
+#### Prereqs
+
+- You'll need Node.JS installed. Install [here](https://nodejs.org/en/)
+- Clone the repo
+- `npm install` for dependencies
+
+#### To Run
+
+`node index.js` and `ctrl` + `c` to quit
