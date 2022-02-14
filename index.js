@@ -10,6 +10,7 @@ const dataFolder = config.BOT_DATA_DIR;
 //counter functions
 const writeCounter = require('./counters').writeCounter;
 
+const arrayUpdate = require('./counters').arrayUpdate; 
 //bot start
 console.log("Starting bot");
 console.log(`Bot prefix is "${prefix}"`);
@@ -56,6 +57,25 @@ client.on("messageCreate", function(message) {
                 message.reply(`Counter "${counter}" already exists!`);
             }
             break;
+        case "listcounters":
+        case "lc":
+            let arrayOfCounters = arrayUpdate()
+            let cList = "";
+            console.log(arrayOfCounters)
+            if (arrayOfCounters.length === 0){
+                message.reply("Currently no active counters!")
+            }else{
+                for (let i = 0; arrayOfCounters.length > i ;i++){
+                    if(i === arrayOfCounters.length - 1) {
+                        cList += (`${arrayOfCounters[i].name}.`)
+                    } else {
+                        cList += (`${arrayOfCounters[i].name}, `)   
+                    }    
+                }
+                message.reply(`Current Timers: ${cList}`)
+            }
+            break;
+            
     };
 
 }); 
