@@ -9,6 +9,7 @@ const dataFolder = config.BOT_DATA_DIR;
 
 //counter functions
 const writeCounter = require('./counters').writeCounter;
+const deleteCounter = require('./counters').deleteCounter;
 
 //bot start
 console.log("Starting bot");
@@ -43,19 +44,39 @@ client.on("messageCreate", function(message) {
         //!CreateCounter or !cc
         case "createcounter":
         case "cc":
-            //get 1st item in the args array, that should be the Counter to create
-            const counter = args[0];
+            //get first item in the args array, convert to lower cased string to stop duplicates
+            const createCounterArrItem = args[0];
+            const createCounterArrItemStr = createCounterArrItem.toLowerCase();
+            const createCounter = createCounterArrItemStr;
 
             //try to create the object. Respond with result
             try{
-                writeCounter(counter,message.createdTimestamp);
+                writeCounter(createCounter,message.createdTimestamp);
                 const dateObject = new Date(message.createdTimestamp); //unix timestamp from the Discord message e.g. 1644839449
                 const readableDateObject = dateObject.toLocaleString("en-gb"); 
-                message.reply(`Counter "${counter}" created! I'll start counting from now! (${readableDateObject})`);
+                message.reply(`Counter "${createCounter}" created! I'll start counting from now! (${readableDateObject})`);
             }catch{
-                message.reply(`Counter "${counter}" already exists!`);
-            }
+                message.reply(`Counter "${createCounter}" already exists!`);
+            };
             break;
+        
+        //!DeleteCounter or !dc
+        case "deletecounter":
+        case "dc":
+            //get first item in the args array, convert to lower case to prevent duplicates
+            const deleteCounterArrItem = args[0];
+            const deleteCounterArrItemStr = deleteCounterArrItem.toLowerCase();
+            const deleteableCounter = deleteCounterArrItemStr;
+
+            //try to delete the object.
+            try{
+                deleteCounter(deleteableCounter);
+                message.reply(`Counter "${deleteableCounter}" deleted!`)
+            }catch{
+                message.reply(`Counter "${deleteableCounter}" doesn't exist!`)
+            };
+            break;
+
     };
 
 }); 
