@@ -1,3 +1,7 @@
+#bot specific items
+config.json
+data
+
 # Logs
 logs
 *.log
