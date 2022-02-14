@@ -40,8 +40,7 @@ function writeCounter(counterName,counterCreationUnixTimeStamp){
     //appending to the imported JSON then writing. 
     counterArray.push(counter);
 
-    //write to the file counters.json file - This will overwrite the file currently.
-    
+    //write to the file counters.json file
     fs.writeFile(file, JSON.stringify(counterArray, null, 2), (error) => {
         if(error){
             console.log(error);
@@ -52,5 +51,52 @@ function writeCounter(counterName,counterCreationUnixTimeStamp){
     return;
 };
 
+// writeCounter("CaiSaidGucci");
+function deleteCounter(counterName){
+
+    //empty array to use in a bit
+    counterArray = [];
+
+    //checking the counters JSON file exists, if so continue if not there's no Counters to delete
+    try{
+        fs.accessSync(file);
+        console.log(`${file} can read / write`);
+        console.log(`reading "${file}"`);
+        counterArray = JSON.parse(fs.readFileSync(file));
+    }catch{
+        throw `Can't read/write ${file}, so no counters to delete`;
+    };
+
+    //checking for 0length array
+    if(counterArray.length === 0){
+        throw `There's nothing to delete`;
+    }else{}; 
+
+    //getting the index of the item in the array
+    let index = 0
+    for(let i = 0; i < counterArray.length; i++){
+        if(counterArray[i].name === counterName){
+            index = i;
+            break;
+        };
+    };
+
+    //remove item from array at discovered index
+    console.log(`deleting "${counterName}" from index ${index}`);
+    counterArray.splice(index,1);
+
+    //Overwrite the file with the new array
+    fs.writeFile(file, JSON.stringify(counterArray, null, 2), (error) => {
+        if(error){
+            console.log(error);
+            return;
+        }
+        console.log(`${file} written to disk`);
+    });
+    return
+};
+
 exports.writeCounter = writeCounter;
 exports.arrayUpdate = arrayUpdate;
+exports.deleteCounter = deleteCounter;
+
