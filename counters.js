@@ -6,7 +6,7 @@ const file = `${dataFolder}/counters.json`;
 
 function arrayUpdate(){
     return JSON.parse(fs.readFileSync(file));
-}
+};
 
 // writeCounter("CaiSaidGucci","1644842334");
 function writeCounter(counterName,counterCreationUnixTimeStamp){

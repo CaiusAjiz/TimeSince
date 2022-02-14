@@ -10,8 +10,8 @@ const dataFolder = config.BOT_DATA_DIR;
 //counter functions
 const writeCounter = require('./counters').writeCounter;
 const deleteCounter = require('./counters').deleteCounter;
-
 const arrayUpdate = require('./counters').arrayUpdate; 
+
 //bot start
 console.log("Starting bot");
 console.log(`Bot prefix is "${prefix}"`);
