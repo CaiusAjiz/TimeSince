@@ -7,11 +7,11 @@ const config = require('./config.json');
 const prefix = config.BOT_PREFIX;
 const dataFolder = config.BOT_DATA_DIR;
 
-//counter functions
-const writeCounter = require('./counters').writeCounter;
-const deleteCounter = require('./counters').deleteCounter;
-const arrayUpdate = require('./counters').arrayUpdate; 
-const formatDuration = require('./counters').formatDuration;
+//Timer functions
+const writeTimer = require('./timers').writeTimer;
+const deleteTimer = require('./timers').deleteTimer;
+const arrayUpdate = require('./timers').arrayUpdate; 
+const formatDuration = require('./timers').formatDuration;
 
 //bot start
 console.log("Starting bot");
@@ -43,59 +43,59 @@ client.on("messageCreate", function(message) {
             message.reply("Pong!");
             break;
         
-        //!CreateCounter or !cc
-        case "createcounter":
-        case "cc":
+        //!CreateTimer or !ct
+        case "createtimer":
+        case "ct":
             //get first item in the args array, convert to lower cased string to stop duplicates
-            const createCounterArrItem = args[0];
-            const createCounterArrItemStr = createCounterArrItem.toLowerCase();
-            const createCounter = createCounterArrItemStr;
+            const createTimerArrItem = args[0];
+            const createTimerArrItemStr = createTimerArrItem.toLowerCase();
+            const createTimer = createTimerArrItemStr;
 
             //try to create the object. Respond with result
             try{
-                writeCounter(createCounter,message.createdTimestamp);
+                writeTimer(createTimer,message.createdTimestamp);
                 const dateObject = new Date(message.createdTimestamp); //unix timestamp from the Discord message e.g. 1644839449
                 const readableDateObject = dateObject.toLocaleString("en-gb"); 
-                message.reply(`Counter "${createCounter}" created! I'll start counting from now! (${readableDateObject})`);
+                message.reply(`Timer "${createTimer}" created! I'll start counting from now! (${readableDateObject})`);
             }catch{
-                message.reply(`Counter "${createCounter}" already exists!`);
+                message.reply(`Timer "${createTimer}" already exists!`);
             };
             break;
             
-        //!ListCounters or !lc
-        case "listcounters":
-        case "lc":
-            let arrayOfCounters = arrayUpdate()
+        //!ListTimers or !lc
+        case "listtimers":
+        case "lt":
+            let arrayOfTimers = arrayUpdate()
             let cList = "";
-            console.log(arrayOfCounters)
-            if (arrayOfCounters.length === 0){
-                message.reply("Currently no active counters!")
+            console.log(arrayOfTimers)
+            if (arrayOfTimers.length === 0){
+                message.reply("Currently no active Timers!")
             }else{
-                for (let i = 0; arrayOfCounters.length > i ;i++){
-                    if(i === arrayOfCounters.length - 1) {
-                        cList += (`${arrayOfCounters[i].name}.`)
+                for (let i = 0; arrayOfTimers.length > i ;i++){
+                    if(i === arrayOfTimers.length - 1) {
+                        cList += (`${arrayOfTimers[i].name}.`)
                     } else {
-                        cList += (`${arrayOfCounters[i].name}, `)   
+                        cList += (`${arrayOfTimers[i].name}, `)   
                     }    
                 }
                 message.reply(`Current Timers: ${cList}`)
             }
             break;
                 
-        //!DeleteCounter or !dc
-        case "deletecounter":
-        case "dc":
+        //!DeleteTimer or !dt
+        case "deletetimer":
+        case "dt":
             //get first item in the args array, convert to lower case to prevent duplicates
-            const deleteCounterArrItem = args[0];
-            const deleteCounterArrItemStr = deleteCounterArrItem.toLowerCase();
-            const deleteableCounter = deleteCounterArrItemStr;
+            const deleteTimerArrItem = args[0];
+            const deleteTimerArrItemStr = deleteTimerArrItem.toLowerCase();
+            const deleteableTimer = deleteTimerArrItemStr;
 
             //try to delete the object.
             try{
-                deleteCounter(deleteableCounter);
-                message.reply(`Counter "${deleteableCounter}" deleted!`)
+                deleteTimer(deleteableTimer);
+                message.reply(`Timer "${deleteableTimer}" deleted!`)
             }catch{
-                message.reply(`Counter "${deleteableCounter}" doesn't exist!`)
+                message.reply(`Timer "${deleteableTimer}" doesn't exist!`)
             };
             break;
         
