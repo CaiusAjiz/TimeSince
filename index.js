@@ -11,6 +11,7 @@ const dataFolder = config.BOT_DATA_DIR;
 const writeCounter = require('./counters').writeCounter;
 const deleteCounter = require('./counters').deleteCounter;
 const arrayUpdate = require('./counters').arrayUpdate; 
+const formatDuration = require('./counters').formatDuration;
 
 //bot start
 console.log("Starting bot");
@@ -97,7 +98,24 @@ client.on("messageCreate", function(message) {
                 message.reply(`Counter "${deleteableCounter}" doesn't exist!`)
             };
             break;
-
+        
+        //!TimeSinceCreated or !tsc
+        case "timesincecreated":
+        case "tsc":
+            let tscArray = arrayUpdate();
+            let tscTarget = args[0].toString();
+            for (let i = 0; tscArray.length > i ; i++){
+                if (tscArray[i].name === tscTarget) {
+                       let tscIndex = i;
+                       console.log(`${tscTarget} is at index ${tscIndex}`)
+                       message.reply(`${tscTarget} has been counting for ${formatDuration((Date.now() - tscArray[tscIndex].created)/1000)}`)
+                       break;
+                   } 
+                if(i === tscArray.length - 1){
+                        message.reply(`Timer ${tscTarget} does not exist`);
+                    }
+                }
+            break;
     };
 
 }); 

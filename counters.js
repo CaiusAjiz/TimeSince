@@ -96,7 +96,41 @@ function deleteCounter(counterName){
     return
 };
 
+//function to format second into a human readable format
+function formatDuration (seconds) {
+    let wordArr = ['year','day','hour','minute','second'];
+    let timeArr = [];
+    let answer = [];
+    let year = Math.floor(seconds/31536000);
+    let day = Math.floor((seconds%31536000) / 86400);
+    let hour = Math.floor((seconds%86400)/3600);  
+    let mins = Math.floor((seconds%3600)/60);
+    let secs = Math.floor(seconds%60);
+    timeArr.push(year,day,hour,mins,secs);
+    for (let i = 0 ; wordArr.length > i; i++){
+      switch (timeArr[i]){
+        case 0:
+          break;
+        case 1:
+          answer.push(`${timeArr[i]} ${wordArr[i]}`);
+          break;
+        default:
+          answer.push(`${timeArr[i]} ${wordArr[i]}s`);
+      }
+    }
+    switch (answer.length){
+      case 0:
+        return 'now'
+      case 1:
+        return answer.toString('');
+      default:
+        let ending = answer[answer.length-1];
+        answer.pop()
+        return (`${answer.join(', ')} and ${ending}`)
+    }
+  }
+
 exports.writeCounter = writeCounter;
 exports.arrayUpdate = arrayUpdate;
 exports.deleteCounter = deleteCounter;
-
+exports.formatDuration = formatDuration;
