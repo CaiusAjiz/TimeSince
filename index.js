@@ -11,7 +11,7 @@ const dataFolder = config.BOT_DATA_DIR;
 const writeTimer = require('./timers').writeTimer;
 const deleteTimer = require('./timers').deleteTimer;
 const arrayUpdate = require('./timers').arrayUpdate; 
-const formatDuration = require('./timers').arrayUpdate;
+const formatDuration = require('./timers').formatDuration;
 
 //bot start
 console.log("Starting bot");
@@ -83,7 +83,7 @@ client.on("messageCreate", function(message) {
             break;
                 
         //!DeleteTimer or !dt
-        case "deleteTimer":
+        case "deletetimer":
         case "dt":
             //get first item in the args array, convert to lower case to prevent duplicates
             const deleteTimerArrItem = args[0];
