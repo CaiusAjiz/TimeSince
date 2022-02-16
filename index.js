@@ -46,6 +46,10 @@ client.on("messageCreate", function(message) {
         //!CreateTimer or !ct
         case "createtimer":
         case "ct":
+            if(!args[0]){
+                message.reply(`Command ${command} needs a second argument to work`)
+                break;
+            }
             //get first item in the args array, convert to lower cased string to stop duplicates
             const createTimerArrItem = args[0];
             const createTimerArrItemStr = createTimerArrItem.toLowerCase();
@@ -85,6 +89,10 @@ client.on("messageCreate", function(message) {
         //!DeleteTimer or !dt
         case "deletetimer":
         case "dt":
+            if(!args[0]){
+                message.reply(`Command ${command} needs a second argument to work`)
+                break;
+            }
             //get first item in the args array, convert to lower case to prevent duplicates
             const deleteTimerArrItem = args[0];
             const deleteTimerArrItemStr = deleteTimerArrItem.toLowerCase();
@@ -102,6 +110,10 @@ client.on("messageCreate", function(message) {
         //!TimeSinceCreated or !tsc
         case "timesincecreated":
         case "tsc":
+            if(!args[0]){
+                message.reply(`Command ${command} needs a second argument to work`)
+                break;
+            }
             let tscArray = arrayUpdate();
             let tscTarget = args[0].toString();
             for (let i = 0; tscArray.length > i ; i++){
