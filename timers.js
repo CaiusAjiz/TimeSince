@@ -4,9 +4,41 @@ const dataFolder = require('./config.json').BOT_DATA_DIR;
 //timers are stored in here
 const file = `${dataFolder}/timers.json`;
 
+//help text is in here
+const helpFile = require('./help.json');
+
 function arrayUpdate(){
     return JSON.parse(fs.readFileSync(file));
 };
+
+// helpText(args[0]); Outputs a string.
+function helpText(commandToGetHelpTextFor){
+    //JSON file, ./help.json is a dict of arrays, where it's "key": [0,1,2] where
+    // "key": is the lowercase name of the command e.g. ping
+    // 0 is the Proper name                        e.g. Ping  
+    // 1 is the short command                      e.g. p
+    // 2 is the Help Text                          e.g. "Responds with a 'Pong', use me with `!ping`"
+    let helpFileString = "";
+    if(typeof commandToGetHelpTextFor === 'undefined'){
+        console.log("nothing in passed arguments, so getting all commands");
+        
+        timerArr = []
+        //iterate over all key,values in the helpfile object, add the "Proper" name to an array
+        for(const [key,value] of Object.entries(helpFile)){
+            timerArr.push(value[0]);
+        };
+        //turn the array into a string separated by a newline
+        const timerArrList = timerArr.join("\n ");
+        helpFileString = `Hi there! \n Here's a list of all the commands you can use with me! \n use \`!help command\` for individual commands: \n ${timerArrList}`;
+    }else{
+        //convert to lowecase to allow for search against keys
+        lowerCase = commandToGetHelpTextFor.toLowerCase();
+        console.log(`Searching for "${lowerCase}"`);
+        //See JSON File entry explanation above
+        helpFileString = helpFile[lowerCase][2];
+    };
+    return helpFileString;
+} 
 
 // writeTimer("CaiSaidGucci","1644842334");
 function writeTimer(timerName,timerCreationUnixTimeStamp){
@@ -130,7 +162,8 @@ function formatDuration (seconds) {
     }
   }
 
-exports.writeTimer = writeTimer;
 exports.arrayUpdate = arrayUpdate;
 exports.deleteTimer = deleteTimer;
 exports.formatDuration = formatDuration;
+exports.helpText = helpText;
+exports.writeTimer = writeTimer;
