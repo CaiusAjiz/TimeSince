@@ -4,14 +4,15 @@ const client = new Discord.Client({intents: ["GUILDS", "GUILD_MESSAGES"]});
 
 //config items
 const config = require('./config.json');
-const prefix = config.BOT_PREFIX;
 const dataFolder = config.BOT_DATA_DIR;
+const prefix = config.BOT_PREFIX;
 
 //Timer functions
-const writeTimer = require('./timers').writeTimer;
-const deleteTimer = require('./timers').deleteTimer;
 const arrayUpdate = require('./timers').arrayUpdate; 
+const deleteTimer = require('./timers').deleteTimer;
 const formatDuration = require('./timers').formatDuration;
+const helpText = require('./timers').helpText;
+const writeTimer = require('./timers').writeTimer;
 
 //bot start
 console.log("Starting bot");
@@ -61,7 +62,18 @@ client.on("messageCreate", function(message) {
                 message.reply(`Timer "${createTimer}" already exists!`);
             };
             break;
-            
+        
+        //!help or !help command
+        case "help":
+            try{
+                console.log("Trying to Find helptext");
+                replyText = helpText(args[0]);
+                message.reply(replyText);
+            }catch{
+                console.log("couldn't find helptext");
+                //message.reply("I don't think that command exists pal.");
+            };     
+            break 
         //!ListTimers or !lc
         case "listtimers":
         case "lt":
