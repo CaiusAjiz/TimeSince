@@ -4,6 +4,10 @@ const dataFolder = require('./config.json').BOT_DATA_DIR;
 //Counters are stored in here
 const file = `${dataFolder}/counters.json`;
 
+function arrayUpdate(){
+    return JSON.parse(fs.readFileSync(file));
+};
+
 // writeCounter("CaiSaidGucci","1644842334");
 function writeCounter(counterName,counterCreationUnixTimeStamp){
 
@@ -93,4 +97,6 @@ function deleteCounter(counterName){
 };
 
 exports.writeCounter = writeCounter;
+exports.arrayUpdate = arrayUpdate;
 exports.deleteCounter = deleteCounter;
+
