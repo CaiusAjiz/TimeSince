@@ -26,6 +26,8 @@ if(!fs.existsSync(dataFolder)){
     fs.mkdirSync(dataFolder);
 }else{console.log('data directory exists')};
 
+
+
 client.on("messageCreate", function(message) { 
     //don't respond if a bot, or there's no command prefix
     if(message.author.bot) return;
@@ -144,4 +146,11 @@ client.on("messageCreate", function(message) {
 
 }); 
 
+//log the bot in, it shows up in discord at this point
 client.login(config.BOT_TOKEN);
+
+//once logged in, set description.
+//valid types https://discord.js.org/#/docs/discord.js/stable/typedef/ActivityType
+client.on('ready', () => {
+    client.user.setActivity(config.BOT_DESCRIPTION, {type : 'PLAYING'});
+});
