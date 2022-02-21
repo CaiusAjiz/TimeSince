@@ -144,6 +144,7 @@ client.on("messageCreate", function(message) {
                 }
             break;
         // RESET THE TIMER
+        //!ResetTimer or !rt
         case "resettimer":
         case "rt":
             let rtArray = arrayUpdate();
@@ -165,7 +166,7 @@ client.on("messageCreate", function(message) {
                         break;
                        }
                 }
-                message.reply(`What timer am I reseting`) // may want to change this if there is only one timer
+                message.reply(`What timer am I resetting?`) // TODO may want to change this if there is only one timer
                 break;
             }
             let rtTarget = args[0];

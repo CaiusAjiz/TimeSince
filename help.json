@@ -2,7 +2,7 @@
     "createtimer": ["CreateTimer","ct","Creates a new timer to start counting, use me with `!CreateTimer SomeName`  or `!ct SomeName`"],
     "deletetimer": ["DeleteTimer","dt","Deletes a timer, use me with `!DeleteTimer TimerName` or `!dt TimerName`"],
     "help": ["Help","","I'm helpful! Use me with either `!Help` to get a list of all commands, or `!Help commandname` to find out more about that command!"],
-    "listtimers": ["ListTimers","lt","Lists all timers, use me with `!ListTimers TimerName` or `!lt TimerName ` "],
+    "listtimers": ["ListTimers","lt","Lists all timers, use me with `!ListTimers TimerName` or `!lt TimerName`"],
     "ping": ["Ping","p","Responds with a 'Pong', use me with `!ping`"],
     "timesincecreated": ["TimerSinceCreated","tsc","How long has it been the Timer you made? Find out here! Use me with `!TimeSinceCreated TimerName` or `!tsc TimerName`"],
     "resettimer": ["resettimer","rt","Reset the timer, prints how long it has been since last reset, if you only have one timer use me with 'resettimer or rt' if you have more than one timer put the timer name after"]
