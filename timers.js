@@ -46,7 +46,9 @@ function writeTimer(timerName,timerCreationUnixTimeStamp){
     //building the Timer object to push into the array
     const timer = {
         name: timerName,
-        created: timerCreationUnixTimeStamp
+        created: timerCreationUnixTimeStamp,
+        lastReset: timerCreationUnixTimeStamp,
+        timesReset: 0
     };
 
     //creating empty array to push object to 
@@ -162,8 +164,22 @@ function formatDuration (seconds) {
     }
   }
 
+  function timerReset(resetIndex, timeStamp){
+    let timerArray = JSON.parse(fs.readFileSync(file));
+    timerArray[resetIndex].timesReset ++;
+    timerArray[resetIndex].lastReset = timeStamp;
+    fs.writeFile(file, JSON.stringify(timerArray, null, 2), (error) => {
+        if(error){
+            console.log(error);
+            return;
+        }
+        console.log(`${file} written to disk`);
+    });
+  }
+
 exports.arrayUpdate = arrayUpdate;
 exports.deleteTimer = deleteTimer;
 exports.formatDuration = formatDuration;
 exports.helpText = helpText;
 exports.writeTimer = writeTimer;
+exports.timerReset = timerReset;
