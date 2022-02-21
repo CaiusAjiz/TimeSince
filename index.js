@@ -27,8 +27,6 @@ if(!fs.existsSync(dataFolder)){
     fs.mkdirSync(dataFolder);
 }else{console.log('data directory exists')};
 
-
-
 client.on("messageCreate", function(message) { 
     //don't respond if a bot, or there's no command prefix
     if(message.author.bot) return;
