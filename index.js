@@ -26,8 +26,7 @@ if(!fs.existsSync(dataFolder)){
     fs.mkdirSync(dataFolder);
 }else{console.log('data directory exists')};
 
-
-
+//for each message that's created, the bot will run this
 client.on("messageCreate", function(message) { 
     //don't respond if a bot, or there's no command prefix
     if(message.author.bot) return;
@@ -144,13 +143,20 @@ client.on("messageCreate", function(message) {
             break;
     };
 
-}); 
+})
+
+//once logged in, set username (warning, rate limited to 2 per hour!) and description,
+//valid types for description https://discord.js.org/#/docs/discord.js/stable/typedef/ActivityType
+client.on('ready', () => {
+    //setting username
+    console.log(`Setting Bot Name to "${config.BOT_NAME}"`)
+    client.user.setUsername(config.BOT_NAME);
+
+    //setting Description
+    console.log(`Setting Bot Description to "${config.BOT_DESCRIPTION}"`);
+    client.user.setActivity(config.BOT_DESCRIPTION, {type : 'PLAYING'});
+
+})
 
 //log the bot in, it shows up in discord at this point
 client.login(config.BOT_TOKEN);
-
-//once logged in, set description.
-//valid types https://discord.js.org/#/docs/discord.js/stable/typedef/ActivityType
-client.on('ready', () => {
-    client.user.setActivity(config.BOT_DESCRIPTION, {type : 'PLAYING'});
-});

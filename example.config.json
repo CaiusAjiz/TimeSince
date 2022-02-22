@@ -2,5 +2,6 @@
     "BOT_TOKEN": " REPLACE ME WITH YOUR BOT'S TOKEN - https://discord.com/developers/applications",
     "BOT_DATA_DIR": "./data",
     "BOT_PREFIX": "!",
+    "BOT_NAME": "TimeSince",
     "BOT_DESCRIPTION": "Get help with !Help"
 }
