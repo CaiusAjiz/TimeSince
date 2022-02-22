@@ -148,10 +148,15 @@ client.on("messageCreate", function(message) {
 //once logged in, set username (warning, rate limited to 2 per hour!) and description,
 //valid types for description https://discord.js.org/#/docs/discord.js/stable/typedef/ActivityType
 client.on('ready', () => {
-    //setting username
-    console.log(`Setting Bot Name to "${config.BOT_NAME}"`)
-    client.user.setUsername(config.BOT_NAME);
+    //setting username, checking if it's different from the listed. 
+    console.log("Setting botname");
+    if(client.user.username = config.BOT_NAME){
+        console.log("Current botname is the same as the new one, nothing to rename!");
 
+    }else{
+        console.log(`Setting Bot Name to "${config.BOT_NAME}"`);
+        client.user.setUsername(config.BOT_NAME);
+    }
     //setting Description
     console.log(`Setting Bot Description to "${config.BOT_DESCRIPTION}"`);
     client.user.setActivity(config.BOT_DESCRIPTION, {type : 'PLAYING'});
