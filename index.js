@@ -14,6 +14,7 @@ const deleteTimer = require('./timers').deleteTimer;
 const formatDuration = require('./timers').formatDuration;
 const helpText = require('./timers').helpText;
 const writeTimer = require('./timers').writeTimer;
+const renameTimer = require('./timers').renameTimer;
 
 //bot start
 console.log("Starting bot");
@@ -188,6 +189,26 @@ client.on("messageCreate", function(message) {
                     }
                 }
             break;
+        // !rename or !rn
+        case "rename":
+        case "rn": //pass the old name and the new name then add a function to rewrite 
+                if (args.length !== 2){
+                    message.reply("Please list the timer you want to rename followed by the new name.")
+                    break;
+                }
+                switch (renameTimer(args[0].toLowerCase(), args[1].toLowerCase())){
+                    case "err1": //oldname does not exist
+                    message.reply(`${args[0]} does not exist`);
+                    break;
+                    case "err2": //newname in use
+                    message.reply(`${args[1]} is in use please use another name`);
+                    break;
+                    default:
+                        message.reply(`${args[0].toLowerCase()} has been changed to ${args[1].toLowerCase()}`)
+                        //for when it works
+                }
+                break;
+                
     };
 
 }); 
