@@ -4,6 +4,7 @@ const client = new Discord.Client({intents: ["GUILDS", "GUILD_MESSAGES"]});
 
 //config items
 const config = require('./config.json');
+const { timerReset } = require('./timers');
 const dataFolder = config.BOT_DATA_DIR;
 const prefix = config.BOT_PREFIX;
 
@@ -25,8 +26,6 @@ if(!fs.existsSync(dataFolder)){
     console.warn('data directory does not exist, creating')
     fs.mkdirSync(dataFolder);
 }else{console.log('data directory exists')};
-
-
 
 client.on("messageCreate", function(message) { 
     //don't respond if a bot, or there's no command prefix
@@ -129,16 +128,63 @@ client.on("messageCreate", function(message) {
                 break;
             }
             let tscArray = arrayUpdate();
-            let tscTarget = args[0].toString();
+            let tscTarget = args[0];
             for (let i = 0; tscArray.length > i ; i++){
                 if (tscArray[i].name === tscTarget) {
                        let tscIndex = i;
                        console.log(`${tscTarget} is at index ${tscIndex}`)
-                       message.reply(`${tscTarget} has been counting for ${formatDuration((Date.now() - tscArray[tscIndex].created)/1000)}`)
+                       message.reply(`${tscTarget} has been counting for ${formatDuration((message.createdTimestamp - tscArray[tscIndex].created)/1000)}`)
                        break;
                    } 
                 if(i === tscArray.length - 1){
                         message.reply(`Timer ${tscTarget} does not exist`);
+                    }
+                }
+            break;
+        // RESET THE TIMER
+        //!ResetTimer or !rt
+        case "resettimer":
+        case "rt":
+            let rtArray = arrayUpdate();
+            let rtcontext;
+            if(rtArray.length === 0){
+                message.reply("No timers currently created");
+                break;
+            }
+            if(!args[0]){
+                if(rtArray.length === 1){
+                    if (rtArray[0].timesReset === 0){
+                        message.reply(`RESET THE TIMER!! ${rtArray[0].name} has been counting for ${formatDuration((message.createdTimestamp - rtArray[0].lastReset)/1000)} This is its first reset`);
+                        timerReset(0, message.createdTimestamp);
+                        break; 
+                       } else {
+                        rtArray[0].timesReset > 1 ? rtcontext = "times" : rtcontext = "time";
+                        message.reply(`RESET THE TIMER!! ${rtArray[0].name} was last reset ${formatDuration((message.createdTimestamp - rtArray[0].lastReset)/1000)} ago. This timer has been reset ${rtArray[0].timesReset} ${rtcontext}!`)
+                        timerReset(0, message.createdTimestamp);
+                        break;
+                       }
+                }
+                message.reply(`What timer am I resetting?`) // TODO may want to change this if there is only one timer
+                break;
+            }
+            let rtTarget = args[0];
+            for (let i = 0; rtArray.length > i ; i++){
+                if (rtArray[i].name === rtTarget) {
+                       let rtIndex = i;
+                       if (rtArray[rtIndex].timesReset === 0){
+                        message.reply(`RESET THE TIMER!! ${rtTarget} has been counting for ${formatDuration((message.createdTimestamp - rtArray[rtIndex].lastReset)/1000)} This is its first reset`);
+                        timerReset(rtIndex, message.createdTimestamp);
+                        break; 
+                       } else {
+                        rtArray[rtIndex].timesReset > 1 ? rtcontext = "times" : rtcontext = "time";
+                        console.log(`${rtTarget} is at index ${rtIndex}`);
+                        message.reply(`RESET THE TIMER!! ${rtTarget} was last reset ${formatDuration((message.createdTimestamp - rtArray[rtIndex].lastReset)/1000)} ago. This timer has been reset ${rtArray[rtIndex].timesReset} ${rtcontext}!`)
+                        timerReset(rtIndex, message.createdTimestamp);
+                        break;
+                    }
+                   } 
+                if(i === rtArray.length - 1){
+                        message.reply(`Timer ${rtTarget} does not exist`);
                     }
                 }
             break;
