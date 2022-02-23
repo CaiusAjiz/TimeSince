@@ -177,9 +177,37 @@ function formatDuration (seconds) {
     });
   }
 
+  function renameTimer(oldName, newName){
+      let renameArray = JSON.parse(fs.readFileSync(file));
+      let rtIndex = 0;
+      for (let i = 0; renameArray.length > i ; i++){
+        if(renameArray[i].name === newName){ //chacks if the new name already exists
+            return "err2"
+        }
+        if (renameArray[i].name === oldName) {
+               rtIndex = i;
+               break;
+            }
+        if(i === renameArray.length - 1){ //after searching all of the timers if the old name is not on the array
+            return "err1";
+            }
+        
+        }
+        renameArray[rtIndex].name = newName;
+        fs.writeFile(file, JSON.stringify(renameArray, null, 2), (error) => {
+            if(error){
+                console.log(error);
+                return;
+            }
+            console.log(`${file} written to disk`);
+        });
+
+    }
+
 exports.arrayUpdate = arrayUpdate;
 exports.deleteTimer = deleteTimer;
 exports.formatDuration = formatDuration;
 exports.helpText = helpText;
 exports.writeTimer = writeTimer;
 exports.timerReset = timerReset;
+exports.renameTimer = renameTimer
