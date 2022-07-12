@@ -1,3 +1,4 @@
+const { Console } = require("console");
 const fs = require("fs");
 const dataFolder = require('./config.json').BOT_DATA_DIR;
 
@@ -42,14 +43,17 @@ function helpText(commandToGetHelpTextFor){
 
 // writeTimer("CaiSaidGucci","1644842334");
 function writeTimer(timerName,timerCreationUnixTimeStamp){
-
+console.log(timerName)
     //building the Timer object to push into the array
     const timer = {
         name: timerName,
+        id: timerName.toLowerCase().split(" ").join(''),
         created: timerCreationUnixTimeStamp,
         lastReset: timerCreationUnixTimeStamp,
         timesReset: 0
     };
+    
+    console.log(timer)
 
     //creating empty array to push object to 
     let timerArray = [];
@@ -66,7 +70,7 @@ function writeTimer(timerName,timerCreationUnixTimeStamp){
  
     //if the name already exists in the timers file's objects, throw so function stops
     for(let i = 0; i < timerArray.length; i++){
-        if(timerArray[i].name === timer.name){
+        if(timerArray[i].id === timer.id){
             throw `${timer.name} already exists`;
         };
     };
@@ -109,7 +113,7 @@ function deleteTimer(timerName){
     //getting the index of the item in the array
     let index = 0
     for(let i = 0; i < timerArray.length; i++){
-        if(timerArray[i].name === timerName){
+        if(timerArray[i].id === timerName.toLowerCase().split(" ").join('')){
             index = i;
             break;
         };
@@ -180,20 +184,22 @@ function formatDuration (seconds) {
   function renameTimer(oldName, newName){
       let renameArray = JSON.parse(fs.readFileSync(file));
       let rtIndex = 0;
-      for (let i = 0; renameArray.length > i ; i++){
-        if(renameArray[i].name === newName){ //chacks if the new name already exists
+      for (let i = 0; renameArray.length >= i ; i++){ 
+    
+        if(i === renameArray.length){ //after searching all of the timers if the old name is not on the array
+            return "err1";
+            }
+        if(renameArray[i].id === newName.toLowerCase().split(" ").join('')){ //checks if the new name already exists
             return "err2"
         }
-        if (renameArray[i].name === oldName) {
+        if (renameArray[i].id === oldName.toLowerCase().split(" ").join('')) {
                rtIndex = i;
                break;
-            }
-        if(i === renameArray.length - 1){ //after searching all of the timers if the old name is not on the array
-            return "err1";
             }
         
         }
         renameArray[rtIndex].name = newName;
+        renameArray[rtIndex].id = newName.toLowerCase().split(" ").join('')
         fs.writeFile(file, JSON.stringify(renameArray, null, 2), (error) => {
             if(error){
                 console.log(error);

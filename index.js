@@ -54,9 +54,7 @@ client.on("messageCreate", function(message) {
                 break;
             }
             //get first item in the args array, convert to lower cased string to stop duplicates
-            const createTimerArrItem = args[0];
-            const createTimerArrItemStr = createTimerArrItem.toLowerCase();
-            const createTimer = createTimerArrItemStr;
+            const createTimer = args.join(' ');
 
             //try to create the object. Respond with result
             try{
@@ -108,9 +106,7 @@ client.on("messageCreate", function(message) {
                 break;
             }
             //get first item in the args array, convert to lower case to prevent duplicates
-            const deleteTimerArrItem = args[0];
-            const deleteTimerArrItemStr = deleteTimerArrItem.toLowerCase();
-            const deleteableTimer = deleteTimerArrItemStr;
+            const deleteableTimer = args.join(' ');
 
             //try to delete the object.
             try{
@@ -129,16 +125,17 @@ client.on("messageCreate", function(message) {
                 break;
             }
             let tscArray = arrayUpdate();
-            let tscTarget = args[0];
+            let tscName = args.join(' ');
+            let tscTarget = args.join('').toString().toLocaleLowerCase();
             for (let i = 0; tscArray.length > i ; i++){
-                if (tscArray[i].name === tscTarget) {
+                if (tscArray[i].id === tscTarget) {
                        let tscIndex = i;
                        console.log(`${tscTarget} is at index ${tscIndex}`)
-                       message.reply(`${tscTarget} has been counting for ${formatDuration((message.createdTimestamp - tscArray[tscIndex].created)/1000)}`)
+                       message.reply(`${tscName} has been counting for ${formatDuration((message.createdTimestamp - tscArray[tscIndex].created)/1000)}`)
                        break;
                    } 
                 if(i === tscArray.length - 1){
-                        message.reply(`Timer ${tscTarget} does not exist`);
+                        message.reply(`Timer ${tscName} does not exist`);
                     }
                 }
             break;
@@ -168,43 +165,51 @@ client.on("messageCreate", function(message) {
                 message.reply(`What timer am I resetting?`) // TODO may want to change this if there is only one timer
                 break;
             }
-            let rtTarget = args[0];
+            let rtTarget = args.join('').toString().toLocaleLowerCase();
+            let rtName = args.join(' ')
             for (let i = 0; rtArray.length > i ; i++){
-                if (rtArray[i].name === rtTarget) {
+                if (rtArray[i].id === rtTarget) {
                        let rtIndex = i;
                        if (rtArray[rtIndex].timesReset === 0){
-                        message.reply(`RESET THE TIMER!! ${rtTarget} has been counting for ${formatDuration((message.createdTimestamp - rtArray[rtIndex].lastReset)/1000)} This is its first reset`);
+                        message.reply(`RESET THE TIMER!! ${rtName} has been counting for ${formatDuration((message.createdTimestamp - rtArray[rtIndex].lastReset)/1000)} This is its first reset`);
                         timerReset(rtIndex, message.createdTimestamp);
                         break; 
                        } else {
                         rtArray[rtIndex].timesReset > 1 ? rtcontext = "times" : rtcontext = "time";
                         console.log(`${rtTarget} is at index ${rtIndex}`);
-                        message.reply(`RESET THE TIMER!! ${rtTarget} was last reset ${formatDuration((message.createdTimestamp - rtArray[rtIndex].lastReset)/1000)} ago. This timer has been reset ${rtArray[rtIndex].timesReset} ${rtcontext}!`)
+                        message.reply(`RESET THE TIMER!! ${rtName} was last reset ${formatDuration((message.createdTimestamp - rtArray[rtIndex].lastReset)/1000)} ago. This timer has been reset ${rtArray[rtIndex].timesReset} ${rtcontext} before!`)
                         timerReset(rtIndex, message.createdTimestamp);
                         break;
                     }
                    } 
                 if(i === rtArray.length - 1){
-                        message.reply(`Timer ${rtTarget} does not exist`);
+                        message.reply(`Timer ${rtName} does not exist`);
                     }
                 }
             break;
         // !rename or !rn
         case "rename":
         case "rn": //pass the old name and the new name then add a function to rewrite 
-                if (args.length !== 2){
-                    message.reply("Please list the timer you want to rename followed by the new name.")
+                if (!args.includes("=")){
+                    message.reply("Please list the timer you want to rename followed by '= ' followed by the new name.")
                     break;
                 }
-                switch (renameTimer(args[0].toLowerCase(), args[1].toLowerCase())){
+                
+                let nameChange = args.join(' ').split('= ');
+                let oldName = nameChange[0].toString();
+                let newName = nameChange[1].toString();
+
+                console.log(`Old name:${oldName} New name:${newName}`);
+
+                switch (renameTimer(oldName, newName)){
                     case "err1": //oldname does not exist
-                    message.reply(`${args[0]} does not exist`);
+                    message.reply(`${oldName} does not exist`);
                     break;
                     case "err2": //newname in use
-                    message.reply(`${args[1]} is in use please use another name`);
+                    message.reply(`${newName} is in use please use another name`);
                     break;
                     default:
-                        message.reply(`${args[0].toLowerCase()} has been changed to ${args[1].toLowerCase()}`)
+                        message.reply(`${oldName} has been changed to ${newName}`)
                         //for when it works
                 }
                 break;
