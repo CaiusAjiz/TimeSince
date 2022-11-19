@@ -1,8 +1,7 @@
 # Development
-
 This markdown doc describes how to get started developing on this bot.
 
-## getting started. 
+## Getting started. 
 
 ### Getting set up
 - You'll need Node.JS installed. Install [here](https://nodejs.org/en/)
@@ -12,3 +11,20 @@ This markdown doc describes how to get started developing on this bot.
 
 ### Running the bot
 `node index.js` and `ctrl` + `c` to quit
+
+## Folder structure
+
+### `bot-infra` 
+Things that need to happen before the bot has signed into Discord, like 
+folder prep and command deployment go here.
+
+### `commands`
+These are slash commands that users interact with. 
+
+### `data`
+Folder that creates on first run. Storage location for the bot once 
+it's running. 
+
+### `events`
+Things the bot does once signed into Discord, but aren't direct user
+interactions. 
