@@ -3,6 +3,5 @@
     "CLIENTID": "Your application's Client ID - check OAUTH2 > General in the above link",
     "GUILDID": "Your Discord Server's ID - Open discord in the web, head to your server and the URL is https://discord.com/channels/server ID/Channel ID",
     "BOT_DATA_DIR": "./data",
-    "BOT_NAME": "TimeSince",
-    "BOT_DESCRIPTION": "Get help with !Help"
+    "BOT_DESCRIPTION": "Try / commands in chat!"
 }
