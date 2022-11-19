@@ -1,5 +1,6 @@
 const fs = require('node:fs');
-const { BOT_DATA_DIR } = require('../config.json')
+const { BOT_DATA_DIR } = require('../config.json');
+const { readTimers, readTimersFromDisk } = require('./readTimersFromDisk');
 
 //timers are stored in here
 const file = `${BOT_DATA_DIR}/timers.json`;
@@ -12,24 +13,14 @@ function writeTimer(timerName,messageTimestamp){
         lastReset: messageTimestamp,
         timesReset: 0
     };
-
-    //creating empty array to push object to 
-    let timerArray = [];
-
-    //checking the timers JSON file exists, if so read and use if not it'll be created on write
-    try{
-        fs.accessSync(file);
-        console.log(`${file} can read / write`);
-        console.log(`reading "${file}"`);
-        timerArray = JSON.parse(fs.readFileSync(file));
-    }catch{
-        console.warn(`Can't read/write ${file}, I'll create it`);
-    };
+    //read timers from disk. 
+    let timerArray = readTimersFromDisk();
 
     //If the name already exists in the JSON file, throw so func stops
+    //the .toLowerCase is to make sure that we can't accidentally get 
+    //duplicated like "Test" and "test".
     for(let i = 0; i < timerArray.length; i++){
-        if(timerArray[i].name === timer.name){
-            console.log()
+        if(timerArray[i].name.toLowerCase() === timer.name.toLowerCase()){
             throw 'alreadyExists';
         };
     };

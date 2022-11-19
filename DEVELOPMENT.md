@@ -25,6 +25,15 @@ These are slash commands that users interact with.
 Folder that creates on first run. Storage location for the bot once 
 it's running. 
 
+timers.json stores each timer as an object, with 4 values
+```
+{
+    "name": "String",
+    "created": UnixTimeStamp,
+    "lastReset": UnixTimeStamp,
+    "timesReset": int
+}
+```
 ### `events`
 Things the bot does once signed into Discord, but aren't direct user
 interactions. 
