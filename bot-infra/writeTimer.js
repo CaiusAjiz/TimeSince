@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const { BOT_DATA_DIR } = require('../config.json');
-const { readTimers, readTimersFromDisk } = require('./readTimersFromDisk');
+const { readTimersFromDisk } = require('./readTimersFromDisk');
 
 //timers are stored in here
 const file = `${BOT_DATA_DIR}/timers.json`;

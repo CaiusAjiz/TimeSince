@@ -9,7 +9,7 @@ module.exports = {
         .addStringOption(option =>
             option
                 .setName('name')
-                .setDescription( `What do you want this called?`)
+                .setDescription( `What do you want the Timer to be called?`)
                 .setRequired(true)),
 
 	async execute(interaction) {

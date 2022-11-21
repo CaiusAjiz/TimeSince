@@ -1,0 +1,39 @@
+const { SlashCommandBuilder, ActionRowBuilder, Events, SelectMenuBuilder } = require('discord.js');
+const { readTimersFromDisk } = require('../bot-infra/readTimersFromDisk');
+
+module.exports = {
+
+	data: new SlashCommandBuilder()
+		.setName('show-timers')
+		.setDescription('All timers in a dropdown, seelct one for more information!'),
+
+	async execute(interaction) {
+
+		//read timers from disk, and convert them to a format compatible with .addoptions
+		const timers = readTimersFromDisk();
+		let optionTimers = []; 
+
+		for(let i = 0; i < timers.length; i++){
+			const singleObjectTimer = {
+				label: timers[i].name,
+				description: timers[i].name,
+				value: timers[i].name
+			}
+
+    	optionTimers.push(singleObjectTimer);
+
+		};
+
+		//build the options for the list
+		const row = new ActionRowBuilder()
+		.addComponents(
+			new SelectMenuBuilder()
+				.setCustomId('show-timers')
+				.setPlaceholder('Select a timer')
+				.addOptions(optionTimers),
+		)
+		//respond with the built list. 
+		await interaction.reply({content: `Here's all of my running Timers! Select one to see more information about it`, components: [row]});
+		
+	},
+};
