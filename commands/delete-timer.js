@@ -1,11 +1,11 @@
-const { SlashCommandBuilder, ActionRowBuilder, Events, StringSelectMenuBuilder } = require('discord.js');
+const { SlashCommandBuilder, ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { readTimersFromDisk } = require('../bot-infra/readTimersFromDisk');
 
 module.exports = {
 
 	data: new SlashCommandBuilder()
-		.setName('show-timers')
-		.setDescription('All timers in a dropdown, seelct one for more information!'),
+		.setName('delete-timer')
+		.setDescription('Shows all timers in a dropdown, picking one deletes it'),
 
 	async execute(interaction) {
 
@@ -28,12 +28,11 @@ module.exports = {
 		const row = new ActionRowBuilder()
 		.addComponents(
 			new StringSelectMenuBuilder()
-				.setCustomId('show-timers')
-				.setPlaceholder('Select a timer')
+				.setCustomId('delete-timer')
+				.setPlaceholder('Select a timer to delete')
 				.addOptions(optionTimers),
 		)
 		//respond with the built list. 
-		await interaction.reply({content: `Here's all of my running Timers! Select one to see more information about it`, components: [row]});
-		
+		await interaction.reply({content: 'Select a Timer to delete it.', components: [row], ephemeral: true});
 	},
 };

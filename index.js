@@ -4,7 +4,7 @@ const path = require('node:path');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 // Bot Startup related classes and config
 const { initBot } = require('./bot-infra/startup')
-const { BOT_TOKEN, BOT_NAME } = require('./config.json');
+const { BOT_TOKEN } = require('./config.json');
 const { deployCommands } = require('./bot-infra/deployCommands');
 
 // Start the bot up, creating dirs and files if necessary
